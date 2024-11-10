@@ -5,6 +5,7 @@ using UnityEngine.TextCore.Text;
 
 public class Player : MonoBehaviour
 {
+    //Does not work with First Person Camera
     private CharacterController controller;
     private Vector3 playerVelocity;
     private float speed;
