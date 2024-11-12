@@ -77,6 +77,7 @@ public class FPSController : MonoBehaviour
 
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+        moveDirection.y = movementDirectionY; //<- the fix, moved it  here
         #endregion
 
         #region Jumping
@@ -84,6 +85,7 @@ public class FPSController : MonoBehaviour
         if(characterController.isGrounded && !Input.GetButtonDown("Jump"))
         {
             doubleJump = false;
+            Debug.Log("Jump Resetted");
         }
 
         if(Input.GetButtonDown("Jump") && canMove)
@@ -94,12 +96,6 @@ public class FPSController : MonoBehaviour
                 moveDirection.y = jumpPower;
                 doubleJump = !doubleJump;
             }
-        }
-
-      
-        else
-        {
-            moveDirection.y = movementDirectionY;
         }
 
         //If in air let gravity pull the characters down

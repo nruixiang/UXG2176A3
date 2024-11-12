@@ -22,11 +22,10 @@ public class LOS : MonoBehaviour
         LineOfSightCheck();
     }
     public void LineOfSightCheck(){
-        Debug.Log("Script Running");
         RaycastHit hit;
         Vector3 playerDirection = player.transform.position - transform.position;
 
-        if(Physics.Raycast(transform.position, playerDirection, out hit, range)){
+        if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, range)){
             Debug.Log("If Check");
             if (hit.collider.gameObject.tag == "Player")
             {
@@ -39,7 +38,7 @@ public class LOS : MonoBehaviour
                 Debug.Log("I DONT SEE YOU");
             }
         }
-        Debug.DrawRay(transform.position, playerDirection.normalized * range, Color.red);
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward).normalized * range, Color.red);
         
     }
 }
