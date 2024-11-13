@@ -23,14 +23,21 @@ public class LOS : MonoBehaviour
     }
     public void LineOfSightCheck(){
         RaycastHit hit;
-        Vector3 playerDirection = player.transform.position - transform.position;
+        //Vector3 playerDirection = player.transform.position - transform.position;
 
         if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, range)){
             Debug.Log("If Check");
-            if (hit.collider.gameObject.tag == "Player")
+            if (hit.collider.gameObject.tag == "Enemy")
             {
                 inLineOfSight = true;
+                
                 Debug.Log("I SEE YOU");
+                if(Input.GetKeyDown(KeyCode.Mouse0)){
+                    //Do Damage
+                    Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
+                    enemy.enemyHealth -= 1f;
+                    Debug.Log(enemy.enemyHealth);
+                }
             }
             else
             {
