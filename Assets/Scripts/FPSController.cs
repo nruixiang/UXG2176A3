@@ -85,14 +85,12 @@ public class FPSController : MonoBehaviour
         if(characterController.isGrounded && !Input.GetButtonDown("Jump"))
         {
             doubleJump = false;
-            Debug.Log("Jump Resetted");
         }
 
         if(Input.GetButtonDown("Jump") && canMove)
         {
             if(characterController.isGrounded || doubleJump)
             {
-                Debug.Log("JUMPING TWICE");
                 moveDirection.y = jumpPower;
                 doubleJump = !doubleJump;
             }
