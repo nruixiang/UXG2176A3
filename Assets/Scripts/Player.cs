@@ -34,6 +34,11 @@ public class Player : MonoBehaviour
             TakeDamage();
             StartCoroutine(ResetCollisionAfterDelay(2));
         }
+
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            //Debug.Log("I am colliding with ground");
+        }
     }
 
     public void TakeDamage()
