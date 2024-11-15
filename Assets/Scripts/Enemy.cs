@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -8,18 +9,20 @@ public class Enemy : MonoBehaviour
         Patrol, Chase, Attack
     }
     private State state;
+    
     //Enemy
     private CharacterController characterController;
     public float enemyHealth;
     [SerializeField] float moveSpeed = 1f;
     private float rotationSpeed = 120;
-    //For Patrolling enemy
     [SerializeField] float minWalk;
     [SerializeField] float maxWalk;
     private float walkTimer;
     private Vector3 randomDirection;
-    //
+    [SerializeField] float detectionRange;
+    private bool hasLineOfSight;
     private GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,23 +30,27 @@ public class Enemy : MonoBehaviour
         state = State.Patrol;
         enemyHealth = 10f;
         player = GameObject.FindGameObjectWithTag("Player");
+        hasLineOfSight = false;
         
     }
 
     // Update is called once per frame
     void Update()
     {
+        CheckPlayerDistance();
+        LineOfSightToPlayer();
         switch (state)
         {
             case State.Patrol:
-            ChasePlayer();
-            //HandlePatrolState();
+            HandlePatrolState();
             break;
             case State.Chase:
+            HandleChaseState();
             break;
             case State.Attack:
             break;
         }
+        Debug.Log(state);
     }
     private void Patrol(){
         Debug.Log("Change Direction");
@@ -55,26 +62,33 @@ public class Enemy : MonoBehaviour
     }
     private void HandlePatrolState()
     {
-        // Update timer
         walkTimer -= Time.deltaTime;
 
-        // Choose new direction if timer expires or we hit something
         if (walkTimer <= 0f)
         {
             Patrol();
         }
 
-        // Calculate movement with gravity
-        Vector3 movement = randomDirection * moveSpeed;
+        MoveEnemy(randomDirection, moveSpeed);
+    }
+    private void HandleChaseState()
+    {
+        if (player == null) return;
+
+        Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
+        directionToPlayer.y = 0; //Keep movement on the ground plane
+
+        MoveEnemy(directionToPlayer, moveSpeed);
+    }
+    private void MoveEnemy(Vector3 direction, float speed)
+    {
+        Vector3 movement = direction * speed;
         movement.y = Physics.gravity.y;
         
-        // Move the enemy
         characterController.Move(movement * Time.deltaTime);
 
-        // Rotate towards movement direction
-        if (randomDirection != Vector3.zero)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(randomDirection.x, 0, randomDirection.z));
+        if(direction != Vector3.zero){
+            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
             transform.rotation = Quaternion.RotateTowards(
                 transform.rotation,
                 targetRotation,
@@ -82,11 +96,42 @@ public class Enemy : MonoBehaviour
             );
         }
     }
-    private void ChasePlayer(){
-        Vector3 direction = player.transform.position - transform.position;
-        direction.Normalize();
+    private void CheckPlayerDistance()
+    {
+        if (player == null) return;
 
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
+        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+
+        if (state == State.Patrol && distanceToPlayer <= detectionRange)
+        {
+            if(hasLineOfSight){
+                state = State.Chase;
+            }
+        } else if (state == State.Chase && distanceToPlayer > detectionRange){
+        
+            if(!hasLineOfSight){
+                Debug.Log("Lost player! Returning to patrol state");
+                state = State.Patrol;
+                Patrol();
+            }
+        }
+        
     }
+    private void LineOfSightToPlayer(){
+        RaycastHit hit;
+        Vector3 directionToPlayer = player.transform.position - transform.position;
 
+        if(Physics.Raycast(transform.position, directionToPlayer, out hit)){
+            if (hit.collider.gameObject.tag == "Player"){
+                Debug.Log("Player detected!");
+                hasLineOfSight = true;
+
+                } else{
+                    hasLineOfSight = false;
+                    Debug.Log("I CANT SEE you");
+
+                }
+        }
+        Debug.DrawRay(transform.position, directionToPlayer, Color.red);
+    }
 }
