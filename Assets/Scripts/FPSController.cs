@@ -46,6 +46,10 @@ public class FPSController : MonoBehaviour
     public bool isRunningPlaying = false;
     public bool isWalkingPlaying = false;
 
+    // Speed detection
+    float walkSpeedMinimum = 0f; // Adjust based on your walkSpeed
+    float runSpeedMinimum = 11.0f;  // Adjust based on your runSpeed
+
 
     // Start is called before the first frame update
     void Start()
@@ -77,97 +81,174 @@ public class FPSController : MonoBehaviour
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        //Vertical
-        float curSpeedX = 0; // Initialize with default value
 
-       
-        if (canMove && Input.GetAxis("Vertical") != 0)
+        // Update movement and check speed
+        if (canMove)
         {
-            //Debug.Log(isRunning);
-            if (isRunning)
-            {
-                curSpeedX = runSpeed * Input.GetAxis("Vertical");
+            // Calculate current speed from movement input
+            float curSpeedX = 0f;
+            float curSpeedY = 0f;
 
+            if (Input.GetAxis("Vertical") != 0)
+            {
+                if (isRunning)
+                {
+                    curSpeedX = runSpeed * Input.GetAxis("Vertical");
+                }
+                else
+                {
+                    curSpeedX = walkSpeed * Input.GetAxis("Vertical");
+                }
+            }
+
+            if (Input.GetAxis("Horizontal") != 0)
+            {
+                if (isRunning)
+                {
+                    curSpeedY = runSpeed * Input.GetAxis("Horizontal");
+                }
+                else
+                {
+                    curSpeedY = walkSpeed * Input.GetAxis("Horizontal");
+                }
+            }
+
+            // Apply movement
+            float movementDirectionY = moveDirection.y;
+            moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+            moveDirection.y = movementDirectionY;
+
+            // Check the actual speed of the CharacterController
+            float currentSpeed = characterController.velocity.magnitude;
+
+            //Debug.Log("Current Speed: " + currentSpeed);
+            //Debug.Log("Walk Threshold: " + walkSpeedMinimum);
+            //Debug.Log("Run Threshold: " + runSpeedMinimum);
+
+
+            // Determine and play the appropriate sound
+            if (currentSpeed > runSpeedMinimum && isRunning)
+            {
+                // Player is running
                 if (!isRunningPlaying)
                 {
+                    Debug.Log("RUN START");
+
                     SoundManager.instance.ChangeLoopSound("run");
-
-                    //Debug.Log("RUNNING");
-                    isRunningPlaying = true;
-                    isWalkingPlaying = false;
-
-                }
-
-            }
-            else
-            {
-                curSpeedX = walkSpeed * Input.GetAxis("Vertical");
-
-                if (!isWalkingPlaying)
-                {
-                    SoundManager.instance.ChangeLoopSound("walk");
-
-                    //Debug.Log("WALKING");
-
-                    isRunningPlaying = false;
-                    isWalkingPlaying = true;
-
-                }
-
-
-            }
-        }
-
-        //Horizontal
-        float curSpeedY = 0; // Initialize with default value
-        if (canMove && Input.GetAxis("Horizontal") != 0)
-        {
-            if (isRunning)
-            {
-                curSpeedY = runSpeed * Input.GetAxis("Horizontal");
-
-                if (!isRunningPlaying)
-                {
-                    SoundManager.instance.ChangeLoopSound("run");
-
-
-                    //Debug.Log("RUNNING");
                     isRunningPlaying = true;
                     isWalkingPlaying = false;
                 }
             }
-            else
+            else if (currentSpeed > walkSpeedMinimum && !isRunning)
             {
-                curSpeedY = walkSpeed * Input.GetAxis("Horizontal");
-
+                // Player is walking
                 if (!isWalkingPlaying)
                 {
+                    Debug.Log("WALK START");
                     SoundManager.instance.ChangeLoopSound("walk");
-
-
-                    //Debug.Log("WALKING");
-
                     isRunningPlaying = false;
                     isWalkingPlaying = true;
                 }
             }
+            else
+            {
+                // Player is stopped
+                if (isRunningPlaying || isWalkingPlaying)
+                {
+                    Debug.Log("STOPPED");
+                    SoundManager.instance.StopLoopSound();
+                    isRunningPlaying = false;
+                    isWalkingPlaying = false;
+                }
+            }
         }
 
-        if (characterController.velocity.magnitude == 0)
-        {
-            Debug.Log("STOPPED");
-            isRunningPlaying = false;
-            isWalkingPlaying = false;
-            SoundManager.instance.StopLoopSound();
-        }
+        ////Vertical
+        //float curSpeedX = 0; // Initialize with default value
+
+
+        //if (canMove && Input.GetAxis("Vertical") != 0)
+        //{
+        //    //Debug.Log(isRunning);
+        //    if (isRunning)
+        //    {
+        //        curSpeedX = runSpeed * Input.GetAxis("Vertical");
+
+        //        if (!isRunningPlaying)
+        //        {
+
+        //            //Debug.Log("RUNNING");
+        //            isRunningPlaying = true;
+        //            isWalkingPlaying = false;
+
+        //        }
+
+        //    }
+        //    else
+        //    {
+        //        curSpeedX = walkSpeed * Input.GetAxis("Vertical");
+
+        //        if (!isWalkingPlaying)
+        //        {
+
+        //            //Debug.Log("WALKING");
+
+        //            isRunningPlaying = false;
+        //            isWalkingPlaying = true;
+
+        //        }
+
+
+        //    }
+        //}
+
+        ////Horizontal
+        //float curSpeedY = 0; // Initialize with default value
+        //if (canMove && Input.GetAxis("Horizontal") != 0)
+        //{
+        //    if (isRunning)
+        //    {
+        //        curSpeedY = runSpeed * Input.GetAxis("Horizontal");
+
+        //        if (!isRunningPlaying)
+        //        {
+
+
+        //            //Debug.Log("RUNNING");
+        //            isRunningPlaying = true;
+        //            isWalkingPlaying = false;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        curSpeedY = walkSpeed * Input.GetAxis("Horizontal");
+
+        //        if (!isWalkingPlaying)
+        //        {
+
+
+        //            //Debug.Log("WALKING");
+
+        //            isRunningPlaying = false;
+        //            isWalkingPlaying = true;
+        //        }
+        //    }
+        //}
+
+        //if (characterController.velocity.magnitude == 0)
+        //{
+        //    Debug.Log("STOPPED");
+        //    isRunningPlaying = false;
+        //    isWalkingPlaying = false;
+        //}
 
 
 
 
-        float movementDirectionY = moveDirection.y;
-        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+        //float movementDirectionY = moveDirection.y;
+        //moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
-        moveDirection.y = movementDirectionY; //<- the fix, moved it  here
+        //moveDirection.y = movementDirectionY; //<- the fix, moved it  here
         #endregion
 
         #region Jumping

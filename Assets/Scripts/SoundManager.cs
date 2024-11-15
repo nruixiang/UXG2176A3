@@ -69,7 +69,12 @@ public class SoundManager : MonoBehaviour
 
     public void StopLoopSound()
     {
-        loopSoundSource.Stop();
+        if (loopSoundSource.isPlaying)
+        {
+            loopSoundSource.Stop();
+        }
+
+        loopSoundSource.clip = null;
     }
 
     public void ChangeLoopSound(string name)
