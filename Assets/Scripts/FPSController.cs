@@ -48,7 +48,7 @@ public class FPSController : MonoBehaviour
 
     // Speed detection
     float walkSpeedMinimum = 0f; // Adjust based on your walkSpeed
-    float runSpeedMinimum = 11.0f;  // Adjust based on your runSpeed
+    float runSpeedMinimum = 9.0f;  // Adjust based on your runSpeed
 
 
     // Start is called before the first frame update
