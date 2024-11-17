@@ -145,7 +145,7 @@ public class FPSController : MonoBehaviour
                 if (!isWalkingPlaying)
                 {
                     Debug.Log("WALK START");
-                    SoundManager.instance.ChangeLoopSound("walk");
+                    //SoundManager.instance.ChangeLoopSound("walk");
                     isRunningPlaying = false;
                     isWalkingPlaying = true;
                 }
@@ -156,7 +156,7 @@ public class FPSController : MonoBehaviour
                 if (isRunningPlaying || isWalkingPlaying)
                 {
                     Debug.Log("STOPPED");
-                    SoundManager.instance.StopLoopSound();
+                    //SoundManager.instance.StopLoopSound();
                     isRunningPlaying = false;
                     isWalkingPlaying = false;
                 }
