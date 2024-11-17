@@ -19,7 +19,7 @@ public class FPSController : MonoBehaviour
     public float lookSpeed = 2f;
     public float lookXLimit = 50f;
 
-    Vector3 moveDirection = Vector3.zero;
+    public Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
 
     public bool canMove = true;
@@ -376,5 +376,10 @@ public class FPSController : MonoBehaviour
         // Stop dashing
         isDashing = false;
     }
+    public void LaunchPlayer(float force)
+{
+    moveDirection.y = force;
+    Debug.Log("Launching player with force: " + force); // Debug log
+}
 
 }
