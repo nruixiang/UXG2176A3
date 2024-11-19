@@ -8,6 +8,10 @@ public class UiManager : MonoBehaviour
 
     public GameObject pauseMenu;
     public FPSController player;
+    [SerializeField] Transform bar;
+    public static float progress;
+    public float progressReq;
+
 
     // Start is called before the first frame update
     void Start()
@@ -61,5 +65,13 @@ public class UiManager : MonoBehaviour
     }
     public void QuitGame(){
         Application.Quit();
+    }
+    public void SetProgressBarState(float currentProg, float maxProg){
+        float state = (float)currentProg;
+        state /= maxProg;
+        if(state < 0){
+            state = 0f;
+        }
+        bar.transform.localScale = new Vector3(state, bar.localScale.y, 1f);
     }
 }
