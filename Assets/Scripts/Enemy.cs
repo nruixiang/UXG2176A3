@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TreeEditor;
+using UnityEditor.Build;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -21,7 +22,9 @@ public class Enemy : MonoBehaviour
     private Vector3 randomDirection;
     [SerializeField] float detectionRange;
     private bool hasLineOfSight;
+    private bool canDamage;
     private GameObject player;
+    private Player playerScript;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +34,7 @@ public class Enemy : MonoBehaviour
         enemyHealth = 10f;
         player = GameObject.FindGameObjectWithTag("Player");
         hasLineOfSight = false;
+        canDamage = true;
         
     }
 
@@ -89,11 +93,7 @@ public class Enemy : MonoBehaviour
 
         if(direction != Vector3.zero){
             Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            transform.rotation = Quaternion.RotateTowards(
-                transform.rotation,
-                targetRotation,
-                rotationSpeed * Time.deltaTime
-            );
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
     }
     private void CheckPlayerDistance()
@@ -133,5 +133,21 @@ public class Enemy : MonoBehaviour
                 }
         }
         Debug.DrawRay(transform.position, directionToPlayer, Color.red);
+    }
+    private void OnControllerColliderHit(ControllerColliderHit col){
+        if(col.collider.CompareTag("Player")){
+            if(canDamage){
+                playerScript = col.collider.GetComponent<Player>();
+                StartCoroutine(EnemyDoDamage());
+                Debug.Log("Player Hit");
+            }
+            
+        }
+    }
+    private IEnumerator EnemyDoDamage(){
+        canDamage = false;
+        playerScript.TakeDamage();
+        yield return new WaitForSeconds(1);
+        canDamage = true;
     }
 }
