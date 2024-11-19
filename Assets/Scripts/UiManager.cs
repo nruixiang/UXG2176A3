@@ -21,6 +21,8 @@ public class UiManager : MonoBehaviour
             pauseMenu = GameObject.Find("Pause");
             pauseMenu.SetActive(false);
         }
+        progress = 0;
+        progressReq = 5;
     }
 
     // Update is called once per frame
@@ -51,6 +53,10 @@ public class UiManager : MonoBehaviour
 
             }
 
+        }
+        SetProgressBarState(progress, progressReq);
+        if(progress >= progressReq){
+            //SceneManager.LoadScene(""); win scene wtv the name
         }
        
     }

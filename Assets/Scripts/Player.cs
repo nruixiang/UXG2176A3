@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
         hp--;
         Debug.Log(hp);
 
-        if (hp == 0)
+        if (hp <= 0)
         {
             //Player 0 health dies
             //Trigger Gameover scene

@@ -7,7 +7,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     private enum State{
-        Patrol, Chase, Attack
+        Patrol, Chase, Attack, Death
     }
     private State state;
     
@@ -53,6 +53,12 @@ public class Enemy : MonoBehaviour
             break;
             case State.Attack:
             break;
+            case State.Death:
+            EnemyDie();
+            break;
+        }
+        if(enemyHealth <= 0){
+            state = State.Death;
         }
         Debug.Log(state);
     }
@@ -149,5 +155,9 @@ public class Enemy : MonoBehaviour
         playerScript.TakeDamage();
         yield return new WaitForSeconds(1);
         canDamage = true;
+    }
+    private void EnemyDie(){
+        UiManager.progress += 1;
+        Destroy(gameObject);
     }
 }
