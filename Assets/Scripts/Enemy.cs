@@ -54,7 +54,7 @@ public class Enemy : MonoBehaviour
             case State.Attack:
             break;
         }
-        Debug.Log(state);
+        //Debug.Log(state);
     }
     private void Patrol(){
         Debug.Log("Change Direction");
@@ -128,7 +128,7 @@ public class Enemy : MonoBehaviour
 
                 } else{
                     hasLineOfSight = false;
-                    Debug.Log("I CANT SEE you");
+                    //Debug.Log("I CANT SEE you");
 
                 }
         }

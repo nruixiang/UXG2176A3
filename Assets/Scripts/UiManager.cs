@@ -31,6 +31,7 @@ public class UiManager : MonoBehaviour
                 Time.timeScale = 0;
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None; //unlock the cursor
+                SoundManager.instance.StopLoopSound();
 
                 player.enabled = false;
             }
@@ -44,7 +45,6 @@ public class UiManager : MonoBehaviour
                 player.enabled = true;
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked; //Lock the cursor
-
             }
 
         }
@@ -52,6 +52,15 @@ public class UiManager : MonoBehaviour
     }
     public void StartGame(){
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void Gameover()
+    {
+        SceneManager.LoadScene("Gameover");
+    }
+    public void LevelComplete()
+    {
+        SceneManager.LoadScene("LevelComplete");
     }
 
     public void BacktoStart()
