@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.TextCore.Text;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -58,6 +59,7 @@ public class Player : MonoBehaviour
 
         if (hp <= 0)
         {
+            SceneManager.LoadScene("Gameover");
             //Player 0 health dies
             //Trigger Gameover scene
         }

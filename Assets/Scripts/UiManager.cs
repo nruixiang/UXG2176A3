@@ -21,6 +21,10 @@ public class UiManager : MonoBehaviour
             pauseMenu = GameObject.Find("Pause");
             pauseMenu.SetActive(false);
         }
+        if(SceneManager.GetActiveScene().name == "Gameover" || SceneManager.GetActiveScene().name == "LevelComplete"){
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
         progress = 0;
         progressReq = 5;
     }
@@ -56,7 +60,7 @@ public class UiManager : MonoBehaviour
         }
         SetProgressBarState(progress, progressReq);
         if(progress >= progressReq){
-            //SceneManager.LoadScene(""); win scene wtv the name
+            SceneManager.LoadScene("LevelComplete");
         }
        
     }
@@ -82,11 +86,16 @@ public class UiManager : MonoBehaviour
         Application.Quit();
     }
     public void SetProgressBarState(float currentProg, float maxProg){
-        float state = (float)currentProg;
-        state /= maxProg;
-        if(state < 0){
-            state = 0f;
+        if(bar != null){
+            float state = (float)currentProg;
+            state /= maxProg;
+            if(state < 0){
+                state = 0f;
+            }
+            bar.transform.localScale = new Vector3(state, bar.localScale.y, 1f);
+        } else {
+            return;
         }
-        bar.transform.localScale = new Vector3(state, bar.localScale.y, 1f);
+        
     }
 }

@@ -8,12 +8,12 @@ public class LOS : MonoBehaviour
     [SerializeField] GameObject player;
     public LayerMask layerMask;
     //private bool inLineOfSight;
-    [SerializeField] float range;
+    //[SerializeField] float range;
     // Start is called before the first frame update
     void Start()
     {
         //inLineOfSight = false;
-        range = 10f;
+        //range = 10f;
     }
 
     // Update is called once per frame
@@ -26,7 +26,7 @@ public class LOS : MonoBehaviour
         //Vector3 playerDirection = player.transform.position - transform.position;
 
         if(Input.GetKeyDown(KeyCode.Mouse0)){
-            if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, range)){
+            if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity)){
                 if (hit.collider.gameObject.tag == "Enemy")
                 {
                     //inLineOfSight = true;
@@ -42,7 +42,7 @@ public class LOS : MonoBehaviour
                 }
             
         }
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward).normalized * range, Color.red);
+        //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward).normalized * range, Color.red);
         }
         
         
