@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TreeEditor;
+using Unity.VisualScripting;
 using UnityEditor.Build;
 using UnityEngine;
 
@@ -25,10 +26,14 @@ public class Enemy : MonoBehaviour
     private bool canDamage;
     private GameObject player;
     private Player playerScript;
+    private MeshRenderer enemyRenderer;
+    private Color originalColor;
 
     // Start is called before the first frame update
     void Start()
     {
+        enemyRenderer = GetComponent<MeshRenderer>();
+        originalColor = enemyRenderer.material.color;
         characterController = GetComponent<CharacterController>();
         state = State.Patrol;
         enemyHealth = 10f;
@@ -155,6 +160,14 @@ public class Enemy : MonoBehaviour
         playerScript.TakeDamage();
         yield return new WaitForSeconds(1);
         canDamage = true;
+    }
+    public IEnumerator DamageFeedback(){
+        enemyRenderer.material.color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        if(enemyRenderer != null){
+            enemyRenderer.material.color = originalColor;
+        }
+        
     }
     private void EnemyDie(){
         UiManager.progress += 1;

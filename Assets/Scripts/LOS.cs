@@ -31,6 +31,7 @@ public class LOS : MonoBehaviour
                 {
                     //inLineOfSight = true;
                     Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
+                    StartCoroutine(enemy.DamageFeedback());
                     enemy.enemyHealth -= 1f;
                     Debug.Log(enemy.enemyHealth);
                     
