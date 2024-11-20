@@ -124,7 +124,7 @@ public class FPSController : MonoBehaviour
             float currentSpeed = characterController.velocity.magnitude;
 
             // Determine and play the appropriate sound
-            if (currentSpeed > runSpeedMinimum && isRunning)
+            if (currentSpeed > runSpeedMinimum && isRunning && characterController.isGrounded)
             {
                 // Player is running
                 if (!isRunningPlaying)
@@ -134,7 +134,7 @@ public class FPSController : MonoBehaviour
                     isWalkingPlaying = false;
                 }
             }
-            else if (currentSpeed > walkSpeedMinimum && !isRunning)
+            else if (currentSpeed > walkSpeedMinimum && !isRunning && characterController.isGrounded)
             {
                 // Player is walking
                 if (!isWalkingPlaying)
