@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -76,8 +77,8 @@ public class FPSController : MonoBehaviour
 
         #region Movement
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 right = transform.TransformDirection(Vector3.right);
+        Vector3 forward = transform.TransformDirection(Vector3.forward);  //pointing z axis
+        Vector3 right = transform.TransformDirection(Vector3.right);  //pointing x axis
 
 
         // Update movement and check speed
@@ -112,9 +113,12 @@ public class FPSController : MonoBehaviour
             }
 
             // Apply movement
-            float movementDirectionY = moveDirection.y;
-            moveDirection = (forward * curSpeedX) + (right * curSpeedY);
-            moveDirection.y = movementDirectionY;
+            float movementDirectionY = moveDirection.y;  //Preserving Vertical Movement
+            moveDirection = (forward * curSpeedX) + (right * curSpeedY); //Calculating Movement
+            moveDirection.y = movementDirectionY; //Restoring Vertical Movement
+
+            characterController.Move(moveDirection * Time.deltaTime);
+
 
             // Check the actual speed of the CharacterController
             float currentSpeed = characterController.velocity.magnitude;
@@ -125,8 +129,6 @@ public class FPSController : MonoBehaviour
                 // Player is running
                 if (!isRunningPlaying)
                 {
-                    Debug.Log("RUN START");
-
                     SoundManager.instance.ChangeLoopSound("run");
                     isRunningPlaying = true;
                     isWalkingPlaying = false;
@@ -137,7 +139,6 @@ public class FPSController : MonoBehaviour
                 // Player is walking
                 if (!isWalkingPlaying)
                 {
-                    Debug.Log("WALK START");
                     SoundManager.instance.ChangeLoopSound("walk");
                     isRunningPlaying = false;
                     isWalkingPlaying = true;
@@ -148,7 +149,6 @@ public class FPSController : MonoBehaviour
                 // Player is stopped
                 if (isRunningPlaying || isWalkingPlaying)
                 {
-                    Debug.Log("STOPPED");
                     SoundManager.instance.StopLoopSound();
                     isRunningPlaying = false;
                     isWalkingPlaying = false;
@@ -159,7 +159,7 @@ public class FPSController : MonoBehaviour
 
         #region Jumping
 
-        if (characterController.isGrounded && !Input.GetButtonDown("Jump"))
+        if (characterController.isGrounded && !Input.GetButtonDown("Jump")) //If player is grounded and did not press jump
         {
             doubleJump = false;
         }
@@ -169,7 +169,7 @@ public class FPSController : MonoBehaviour
             if (characterController.isGrounded || doubleJump)
             {
                 moveDirection.y = jumpPower;
-                doubleJump = !doubleJump;
+                doubleJump = !doubleJump;  //Set double jump to opposite || If player double jump, the doubleJump var will stay true till the character is grounded (Double jump resets when player is grounded)
             }
         }
 
@@ -184,9 +184,6 @@ public class FPSController : MonoBehaviour
         #endregion
 
         #region Handles Rotation
-
-        characterController.Move(moveDirection * Time.deltaTime);
-
         if (canMove)
         {
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
