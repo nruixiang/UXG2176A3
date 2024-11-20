@@ -30,9 +30,6 @@ public class SoundManager : MonoBehaviour
             soundManagerSource = audioSources[0];
             loopSoundSource = audioSources[1];
             musicManagerSource = audioSources[2];
-
-            Debug.Log(loopSoundSource);
-
         }
         else
         {
@@ -80,8 +77,6 @@ public class SoundManager : MonoBehaviour
 
                 if (loopSoundSource.clip != Walk)
                 {
-
-                    Debug.Log("CHANGED TO WALK");
                     loopSoundSource.clip = Walk;
                     PlayLoopSound();
                 }
@@ -92,14 +87,10 @@ public class SoundManager : MonoBehaviour
 
                 if (loopSoundSource.clip != Run)
                 {
-
-
                     loopSoundSource.clip = Run;
                     PlayLoopSound();
                 }
                 break;
-
-
         }
     }
 

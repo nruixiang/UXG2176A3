@@ -68,7 +68,6 @@ public class Enemy : MonoBehaviour
         //Debug.Log(state);
     }
     private void Patrol(){
-        Debug.Log("Change Direction");
         float randomWalk = Random.Range(0f, 2f * Mathf.PI);
 
         randomDirection = new Vector3(Mathf.Sin(randomWalk), 0f, Mathf.Cos(randomWalk)).normalized;
@@ -121,7 +120,6 @@ public class Enemy : MonoBehaviour
         } else if (state == State.Chase && distanceToPlayer > detectionRange){
         
             if(!hasLineOfSight){
-                Debug.Log("Lost player! Returning to patrol state");
                 state = State.Patrol;
                 Patrol();
             }
@@ -134,7 +132,6 @@ public class Enemy : MonoBehaviour
 
         if(Physics.Raycast(transform.position, directionToPlayer, out hit)){
             if (hit.collider.gameObject.tag == "Player"){
-                Debug.Log("Player detected!");
                 hasLineOfSight = true;
 
                 } else{

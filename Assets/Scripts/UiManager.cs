@@ -44,7 +44,6 @@ public class UiManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape) && pauseMenu.activeSelf == false)
             {
-                Debug.Log("Pause");
                 pauseMenu.SetActive(true);
                 Time.timeScale = 0;
                 Cursor.visible = true;
@@ -56,8 +55,6 @@ public class UiManager : MonoBehaviour
 
             else if (Input.GetKeyDown(KeyCode.Escape) && pauseMenu.activeSelf == true)
             {
-                Debug.Log("Unpause");
-
                 pauseMenu.SetActive(false);
                 Time.timeScale = 1;
                 player.enabled = true;

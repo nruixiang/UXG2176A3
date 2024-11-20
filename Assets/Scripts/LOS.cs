@@ -7,8 +7,7 @@ public class LOS : MonoBehaviour
 {
     [SerializeField] GameObject player;
     public LayerMask layerMask;
-    //private bool inLineOfSight;
-    //[SerializeField] float range;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,16 +32,10 @@ public class LOS : MonoBehaviour
                     Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
                     StartCoroutine(enemy.DamageFeedback());
                     enemy.enemyHealth -= 1f;
-                    Debug.Log(enemy.enemyHealth);
                     
-                } else{
-
-                //inLineOfSight = false;
-                Debug.Log("I DONT SEE YOU");
-                }
+                } 
             
-        }
-        //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward).normalized * range, Color.red);
+            }
         }
         
         

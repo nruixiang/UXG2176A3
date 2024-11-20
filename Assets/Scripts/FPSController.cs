@@ -121,11 +121,6 @@ public class FPSController : MonoBehaviour
             // Check the actual speed of the CharacterController
             float currentSpeed = characterController.velocity.magnitude;
 
-            //Debug.Log("Current Speed: " + currentSpeed);
-            //Debug.Log("Walk Threshold: " + walkSpeedMinimum);
-            //Debug.Log("Run Threshold: " + runSpeedMinimum);
-
-
             // Determine and play the appropriate sound
             if (currentSpeed > runSpeedMinimum && isRunning)
             {
@@ -162,93 +157,6 @@ public class FPSController : MonoBehaviour
                 }
             }
         }
-
-        ////Vertical
-        //float curSpeedX = 0; // Initialize with default value
-
-
-        //if (canMove && Input.GetAxis("Vertical") != 0)
-        //{
-        //    //Debug.Log(isRunning);
-        //    if (isRunning)
-        //    {
-        //        curSpeedX = runSpeed * Input.GetAxis("Vertical");
-
-        //        if (!isRunningPlaying)
-        //        {
-
-        //            //Debug.Log("RUNNING");
-        //            isRunningPlaying = true;
-        //            isWalkingPlaying = false;
-
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        curSpeedX = walkSpeed * Input.GetAxis("Vertical");
-
-        //        if (!isWalkingPlaying)
-        //        {
-
-        //            //Debug.Log("WALKING");
-
-        //            isRunningPlaying = false;
-        //            isWalkingPlaying = true;
-
-        //        }
-
-
-        //    }
-        //}
-
-        ////Horizontal
-        //float curSpeedY = 0; // Initialize with default value
-        //if (canMove && Input.GetAxis("Horizontal") != 0)
-        //{
-        //    if (isRunning)
-        //    {
-        //        curSpeedY = runSpeed * Input.GetAxis("Horizontal");
-
-        //        if (!isRunningPlaying)
-        //        {
-
-
-        //            //Debug.Log("RUNNING");
-        //            isRunningPlaying = true;
-        //            isWalkingPlaying = false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        curSpeedY = walkSpeed * Input.GetAxis("Horizontal");
-
-        //        if (!isWalkingPlaying)
-        //        {
-
-
-        //            //Debug.Log("WALKING");
-
-        //            isRunningPlaying = false;
-        //            isWalkingPlaying = true;
-        //        }
-        //    }
-        //}
-
-        //if (characterController.velocity.magnitude == 0)
-        //{
-        //    Debug.Log("STOPPED");
-        //    isRunningPlaying = false;
-        //    isWalkingPlaying = false;
-        //}
-
-
-
-
-        //float movementDirectionY = moveDirection.y;
-        //moveDirection = (forward * curSpeedX) + (right * curSpeedY);
-
-        //moveDirection.y = movementDirectionY; //<- the fix, moved it  here
         #endregion
 
         #region Jumping
@@ -377,9 +285,8 @@ public class FPSController : MonoBehaviour
         isDashing = false;
     }
     public void LaunchPlayer(float force)
-{
+    {
     moveDirection.y = force;
-    Debug.Log("Launching player with force: " + force); // Debug log
-}
+    }
 
 }

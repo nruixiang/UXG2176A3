@@ -12,11 +12,9 @@ public class JumpPad : MonoBehaviour
         CharacterController controller = other.GetComponentInParent<CharacterController>();
         if(controller != null)
         {
-            Debug.Log("Found controller"); // Debug log
             FPSController playerController = controller.GetComponent<FPSController>();
             if(playerController != null)
             {
-                Debug.Log("Found player controller"); // Debug log
                 playerController.LaunchPlayer(launchForce);
             }
         }
