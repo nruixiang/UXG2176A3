@@ -14,7 +14,6 @@ public class SoundManager : MonoBehaviour
 
     public AudioClip Music;
 
-    public AudioClip Gun;
     public AudioClip Run;
     public AudioClip Walk;
 
@@ -40,24 +39,19 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
-    public void PlaySound(string name)
-    {
-        switch (name)
-        {
-            case "Gun":
-                soundManagerSource.volume = 0.30f;
-
-                soundManagerSource.PlayOneShot(Gun);
-                break;
-           
-        }
-    }
 
     public void PlayMusic()
     {
         musicManagerSource.loop = true;
         musicManagerSource.Play();
+    }
+
+    public void StopMusic()
+    {
+        if (musicManagerSource.isPlaying)
+        {
+            musicManagerSource.Stop();
+        }
     }
 
     public void PlayLoopSound()

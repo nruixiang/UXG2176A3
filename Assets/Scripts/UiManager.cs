@@ -20,13 +20,21 @@ public class UiManager : MonoBehaviour
         {
             pauseMenu = GameObject.Find("Pause");
             pauseMenu.SetActive(false);
+            SoundManager.instance.PlayMusic();
         }
         if(SceneManager.GetActiveScene().name == "Gameover" || SceneManager.GetActiveScene().name == "LevelComplete"){
             Cursor.visible = true;
+            SoundManager.instance.StopLoopSound();
             Cursor.lockState = CursorLockMode.None;
         }
         progress = 0;
         progressReq = 5;
+
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            SoundManager.instance.StopMusic();
+
+        }
     }
 
     // Update is called once per frame
@@ -62,7 +70,9 @@ public class UiManager : MonoBehaviour
         if(progress >= progressReq){
             SceneManager.LoadScene("LevelComplete");
         }
-       
+
+   
+
     }
     public void StartGame(){
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
