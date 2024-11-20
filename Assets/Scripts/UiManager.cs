@@ -71,10 +71,13 @@ public class UiManager : MonoBehaviour
     public void Gameover()
     {
         SceneManager.LoadScene("Gameover");
+        SoundManager.instance.StopLoopSound();
+
     }
     public void LevelComplete()
     {
         SceneManager.LoadScene("LevelComplete");
+        SoundManager.instance.StopLoopSound();
     }
 
     public void BacktoStart()
