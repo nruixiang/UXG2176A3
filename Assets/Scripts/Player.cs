@@ -24,8 +24,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      foreach(Image img in hearts){
-            img.sprite = emptyHeart;
+        //Update UI image when taking damage
+        foreach(Image img in hearts){
+                img.sprite = emptyHeart;
 
         }
         for (int i = 0; i < hp; i++){
@@ -45,23 +46,16 @@ public class Player : MonoBehaviour
             TakeDamage();
             StartCoroutine(ResetCollisionAfterDelay(2));
         }
-
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            //Debug.Log("I am colliding with ground");
-        }
     }
-
+    //Proceed to Gameover scene when player dies
     public void TakeDamage()
     {
         hp--;
-        Debug.Log(hp);
 
         if (hp <= 0)
         {
             SceneManager.LoadScene("Gameover");
-            //Player 0 health dies
-            //Trigger Gameover scene
+
         }
     }
 

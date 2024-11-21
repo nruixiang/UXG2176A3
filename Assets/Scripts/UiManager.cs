@@ -64,6 +64,7 @@ public class UiManager : MonoBehaviour
             }
 
         }
+        //Check objective progress to load LevelComplete when completed
         SetProgressBarState(progress, progressReq);
         if(progress >= progressReq){
             SceneManager.LoadScene("LevelComplete");
@@ -96,6 +97,7 @@ public class UiManager : MonoBehaviour
     public void QuitGame(){
         Application.Quit();
     }
+    //Update Ui Bar state to reflect player progress on the games objective
     public void SetProgressBarState(float currentProg, float maxProg){
         if(bar != null){
             float state = (float)currentProg;

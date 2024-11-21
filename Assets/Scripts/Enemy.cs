@@ -10,7 +10,6 @@ public class Enemy : MonoBehaviour
     }
     private State state;
     
-    //Enemy
     private CharacterController characterController;
     public float enemyHealth;
     [SerializeField] float moveSpeed = 1f;
@@ -26,6 +25,7 @@ public class Enemy : MonoBehaviour
     private Player playerScript;
     private MeshRenderer enemyRenderer;
     private Color originalColor;
+    [SerializeField] LayerMask layerMask;
 
     // Start is called before the first frame update
     void Start()
@@ -60,11 +60,12 @@ public class Enemy : MonoBehaviour
             EnemyDie();
             break;
         }
+        //Checking if enemy is dead
         if(enemyHealth <= 0){
             state = State.Death;
         }
-        //Debug.Log(state);
     }
+    //Randomly set a direction to walk around
     private void Patrol(){
         float randomWalk = Random.Range(0f, 2f * Mathf.PI);
 
@@ -72,6 +73,7 @@ public class Enemy : MonoBehaviour
 
         walkTimer = Random.Range(minWalk, maxWalk);
     }
+    //Randomly walk around
     private void HandlePatrolState()
     {
         walkTimer -= Time.deltaTime;
@@ -83,6 +85,7 @@ public class Enemy : MonoBehaviour
 
         MoveEnemy(randomDirection, moveSpeed);
     }
+    //Move the enemy towards the player
     private void HandleChaseState()
     {
         if (player == null) return;
@@ -92,6 +95,7 @@ public class Enemy : MonoBehaviour
 
         MoveEnemy(directionToPlayer, moveSpeed);
     }
+    //Moves the enemy
     private void MoveEnemy(Vector3 direction, float speed)
     {
         Vector3 movement = direction * speed;
@@ -104,6 +108,7 @@ public class Enemy : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
     }
+    //Checks distance between enemy & player to transition between states
     private void CheckPlayerDistance()
     {
         if (player == null) return;
@@ -124,38 +129,39 @@ public class Enemy : MonoBehaviour
         }
         
     }
+    //Raycast to detect player for Line of Sight
     private void LineOfSightToPlayer(){
         RaycastHit hit;
         Vector3 directionToPlayer = player.transform.position - transform.position;
 
-        if(Physics.Raycast(transform.position, directionToPlayer, out hit)){
+        if(Physics.Raycast(transform.position, directionToPlayer, out hit, layerMask)){
             if (hit.collider.gameObject.tag == "Player"){
                 hasLineOfSight = true;
 
                 } else{
                     hasLineOfSight = false;
-                    //Debug.Log("I CANT SEE you");
 
                 }
         }
-        Debug.DrawRay(transform.position, directionToPlayer, Color.red);
     }
+    //Damage the player
     private void OnControllerColliderHit(ControllerColliderHit col){
         if(col.collider.CompareTag("Player")){
             if(canDamage){
                 playerScript = col.collider.GetComponent<Player>();
                 StartCoroutine(EnemyDoDamage());
-                Debug.Log("Player Hit");
             }
             
         }
     }
+    //Damage delay
     private IEnumerator EnemyDoDamage(){
         canDamage = false;
         playerScript.TakeDamage();
         yield return new WaitForSeconds(1);
         canDamage = true;
     }
+    //Feedback for when enemy takes damage
     public IEnumerator DamageFeedback(){
         enemyRenderer.material.color = Color.red;
         yield return new WaitForSeconds(0.2f);
@@ -164,6 +170,7 @@ public class Enemy : MonoBehaviour
         }
         
     }
+    //Destroy enemy
     private void EnemyDie(){
         UiManager.progress += 1;
         Destroy(gameObject);

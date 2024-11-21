@@ -8,7 +8,7 @@ public class JumpPad : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // First try to get CharacterController from the colliding object
+        //Checks object for CharacterController component to launch it
         CharacterController controller = other.GetComponentInParent<CharacterController>();
         if(controller != null)
         {

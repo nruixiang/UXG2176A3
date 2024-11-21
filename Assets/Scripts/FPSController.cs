@@ -265,7 +265,7 @@ public class FPSController : MonoBehaviour
             yield return null; // Wait until the next frame
         }
 
-        StartCoroutine(ResetDashAfterDelay(10));
+        StartCoroutine(ResetDashAfterDelay(1.5f));
 
     }
 
