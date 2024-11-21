@@ -178,9 +178,6 @@ public class FPSController : MonoBehaviour
         {
             moveDirection.y -= gravity * Time.deltaTime;
         }
-
-
-
         #endregion
 
         #region Handles Rotation

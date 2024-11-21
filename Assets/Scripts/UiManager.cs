@@ -40,6 +40,7 @@ public class UiManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Pause Menu
         if (SceneManager.GetActiveScene().name == "game")
         {
             if (Input.GetKeyDown(KeyCode.Escape) && pauseMenu.activeSelf == false)

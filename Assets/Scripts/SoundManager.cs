@@ -6,6 +6,7 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
 
+    //Sources
     public AudioSource soundManagerSource;
     public AudioSource loopSoundSource;
     public AudioSource musicManagerSource;
@@ -14,6 +15,7 @@ public class SoundManager : MonoBehaviour
 
     public AudioClip Music;
 
+    //Audio Clips
     public AudioClip Run;
     public AudioClip Walk;
 
@@ -37,6 +39,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    //Music Methods
     public void PlayMusic()
     {
         musicManagerSource.loop = true;
@@ -51,6 +54,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    //Loop Sound Methods
     public void PlayLoopSound()
     {
         loopSoundSource.loop = true;
